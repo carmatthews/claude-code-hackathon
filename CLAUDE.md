@@ -8,12 +8,18 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 One metric is calculated four different ways depending on who you ask. The goal: one authoritative definition, a versioned calculation engine with an API, a single dashboard that replaces the 40, and an NL query layer over the semantic layer.
 
+## Architecture
+
+See [`decisions/architecture.md`](decisions/architecture.md) for the full system diagram and layer descriptions.
+
+Data flows: raw sources (timezone mismatches, dupes, gaps) → ingestion pipeline → canonical store → versioned calculation engine (REST API) → semantic layer + MCP server → NL query layer (Claude) + single dashboard → eval harness (CI). The agentic variance panel (coordinator + geography/product/time subagents) hooks into the NL layer to explain unexpected metric movement.
+
 ## Repo Structure
 
 - `README.md` — team submission doc
 - `CLAUDE.md` — this file; update as conventions are established
 - `presentation.html` — HTML deck built with Claude Code, required for submission
-- `decisions/` — ADRs go here (judges read these)
+- `decisions/` — ADRs and architecture diagram (`architecture.md`, `metric-definition.md`)
 - `data/` — raw source data (realistic noise: gaps, mislabeled categories, timezone mismatches, duplicates)
 - `engine/` — metric calculation as code with an API; each result tagged with definition version
 - `semantic/` — semantic layer definitions and MCP server (`get_metric`, `list_definitions`, `explain_calculation`, `compare_periods`)
